@@ -122,9 +122,9 @@ namespace BTCPayServer
             return $"{UriScheme}:{cryptoInfoAddress}?amount={cryptoInfoDue.ToString(false, true)}";
         }
 
-        public virtual GetTransactionsResponse FilterValidTransactions(GetTransactionsResponse response)
+        public virtual List<TransactionInformation> FilterValidTransactions(List<TransactionInformation> transactionInformationSet)
         {
-            return response;
+            return transactionInformationSet;
         }
     }
 
