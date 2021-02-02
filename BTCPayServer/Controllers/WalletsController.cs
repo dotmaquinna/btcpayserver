@@ -660,7 +660,7 @@ namespace BTCPayServer.Controllers
 
             if (!ModelState.IsValid)
                 return View(vm);
-
+ 
             DerivationSchemeSettings derivationScheme = GetDerivationSchemeSettings(walletId);
 
             CreatePSBTResponse psbt = null;
@@ -900,7 +900,7 @@ namespace BTCPayServer.Controllers
                 return View(nameof(SignWithSeed), viewModel);
             }
 
-            var changed = PSBTChanged(psbt, () => psbt.SignAll(settings.AccountDerivation, signingKey, rootedKeyPath, new SigningOptions()
+            var changed = psbt.PSBTChanged( () => psbt.SignAll(settings.AccountDerivation, signingKey, rootedKeyPath, new SigningOptions()
             {
                 EnforceLowR = !(viewModel.SigningContext?.EnforceLowR is false)
             }));
@@ -917,15 +917,6 @@ namespace BTCPayServer.Controllers
                 SigningKeyPath = rootedKeyPath?.ToString(),
                 SigningContext = viewModel.SigningContext
             });
-        }
-
-
-        private bool PSBTChanged(PSBT psbt, Action act)
-        {
-            var before = psbt.ToBase64();
-            act();
-            var after = psbt.ToBase64();
-            return before != after;
         }
 
         private string ValueToString(Money v, BTCPayNetworkBase network)
